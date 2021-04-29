@@ -1,8 +1,8 @@
 {
   "name": "@reecem/custom-type-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "API interface for the Prismic.io Custom Type API (beta)",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build tsconfig.json"
