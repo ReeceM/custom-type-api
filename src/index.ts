@@ -44,7 +44,7 @@ class Api {
 
       return token;
     } catch (error) {
-      throw new Error(`[Unable to login] ${error}`)
+      throw new Error(`[Custom Type API] Unable to log in with login details`)
     }
   }
 
