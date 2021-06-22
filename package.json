@@ -1,6 +1,6 @@
 {
   "name": "@reecem/custom-type-api",
-  "version": "0.1.1",
+  "version": "0.2.0-alpha.0",
   "description": "API interface for the Prismic.io Custom Type API (beta)",
   "type": "module",
   "source": "src/index.ts",
