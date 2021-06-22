@@ -1,8 +1,10 @@
 import { Response } from "node-fetch";
 import { TypeModel } from "../../Models/TypeModel";
 import HttpFetch from "../../utils/interface";
+import { types as typeRoute } from "../../utils/routes";
+import ApiInterface from "../api-interface";
 
-class Types {
+class Types implements ApiInterface {
   private repository: string;
   private http: HttpFetch;
 
@@ -17,22 +19,21 @@ class Types {
   public async getOne(customType: string): Promise<TypeModel> {
 
     try {
-      const response = await this.http.get(`https://customtypes.prismic.io/customtypes/${customType}`);
+      const response = await this.http.get(typeRoute.show(customType));
 
-      const type: TypeModel = await response.json();
+      const type:TypeModel = await response.json();
 
       return type;
-
     } catch (error) {
       throw new Error(error)
     }
   }
 
-  public async getAll(): Promise<Array<TypeModel>> {
+  public async getAll(): Promise<TypeModel[]> {
 
     try {
-      const response = await this.http.get('https://customtypes.prismic.io/customtypes');
-      const types: Array<TypeModel> = await response.json()
+      const response = await this.http.get(typeRoute.index);
+      const types: TypeModel[] = await response.json()
 
       return types;
     } catch (error) {
@@ -49,8 +50,9 @@ class Types {
 
     try {
 
-      const insertResponse = await this.http.post('https://customtypes.prismic.io/customtypes/insert', customType);
-      const result = insertResponse.json()
+      const insertResponse = await this.http.post(typeRoute.insert, customType);
+      const result = await insertResponse.json()
+
       return result;
 
     } catch (error) {
@@ -60,7 +62,7 @@ class Types {
 
   public async update(customType: TypeModel): Promise<Response> {
 
-    return await this.http.post('https://customtypes.prismic.io/customtypes/update', customType);
+    return await this.http.post(typeRoute.update, customType);
   }
 }
 
