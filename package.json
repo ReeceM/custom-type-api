@@ -1,11 +1,12 @@
 {
   "name": "@reecem/custom-type-api",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0-alpha.2",
   "description": "API interface for the Prismic.io Custom Type API (beta)",
   "type": "module",
   "source": "src/index.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "microbundle",
@@ -15,7 +16,9 @@
   "keywords": [
     "prismic.io",
     "custom-types",
-    "slices"
+    "slices",
+    "api",
+    "slicemachine"
   ],
   "author": "ReeceM",
   "license": "ISC",
