@@ -24,18 +24,23 @@ class HttpFetch implements Handler{
     };
   }
 
-  async post(url: string, body: object) {
+  async post(url: string, body: object): Promise<Response> {
 
     return await fetch(url, this.request('POST', JSON.stringify(body)));
   }
 
-  async get(url: string) {
+  async get(url: string): Promise<Response> {
 
     return await fetch(url, this.request('GET'))
   }
 
   withHeaders(newHeaders: {[key: string]: any}) {
     for (const header in newHeaders) {
+
+      if (this.headers?.has(header)) {
+        if (this.headers?.get(header) === newHeaders[header]) return this;
+      }
+
       this.headers?.append(header, newHeaders[header])
     }
 
