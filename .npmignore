@@ -2,3 +2,6 @@
 node_modules
 env.json
 src
+.editorconfig
+pnpm-lock.yml
+package-lock.json
