@@ -1,6 +1,7 @@
-import fetch from "node-fetch";
 import Slices from "./API/Slices";
 import Types from "./API/Types";
+import login from "./utils/login";
+
 import HttpFetch from "./utils/interface";
 
 class Api {
@@ -15,30 +16,30 @@ class Api {
     this.token = token;
   }
 
-  async login(email: string, password: string, registeredCallback: Function) {
+  async login(email: string, password: string, registeredCallback?: Function) {
 
     if (!this.token) {
       this.token = await this.generateToken(email, password)
 
-      registeredCallback(this.token);
+      registeredCallback ? registeredCallback(this.token) : null;
     }
 
-    let http = new HttpFetch(this.token)
+    this.init()
+  }
+
+  public init() {
+    let http:HttpFetch = new HttpFetch(this.token as string)
 
     this._slices = new Slices(this.repository, http);
     this._types = new Types(this.repository, http);
   }
 
   private async generateToken(email: string, password: string) {
+
+    console?.warn("[WARN] using email login method, an API key is safer.");
+
     try {
-      const response = await fetch("https://auth.prismic.io/login", {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password
-        }),
-        redirect: 'follow'
-      })
+      const response = await login({email, password})
 
       const token = await response.text();
 
