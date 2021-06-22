@@ -1,3 +1,9 @@
+.vscode
 node_modules
+
+# Builds
 dist
+
+# Environment stuff
 env.json
+

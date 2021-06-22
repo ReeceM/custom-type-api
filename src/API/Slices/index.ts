@@ -1,4 +1,5 @@
 import { Response } from "node-fetch";
+import { SliceModel } from "../../Models/SliceModel";
 import HttpFetch from "../../utils/interface";
 
 
@@ -13,24 +14,39 @@ class Slices {
     });
   }
 
-  public async getOne(slice: string): Promise<Response> {
+  public async getOne(slice: string): Promise<SliceModel> {
+    try {
+      const response = await this.http.get(`https://customtypes.prismic.io/slices/${slice}`);
+      const sliceModel: SliceModel = await response.json();
 
-    return await this.http.get(`https://customtypes.prismic.io/slices/${slice}`);
+      return sliceModel;
+    } catch (error) {
+      console.error(`[ERROR] Unable to fetch the slice: ${slice}`);
+      throw new Error(`[ERROR] Unable to fetch the slice: ${slice}`)
+    }
   }
 
-  public async getAll(): Promise<Response> {
+  public async getAll(): Promise<Array<SliceModel>> {
+    try {
 
-    return await this.http.get('https://customtypes.prismic.io/slices');
+      const response = await this.http.get('https://customtypes.prismic.io/slices');
+
+      const types: Array<SliceModel> = await response.json();
+
+      return types;
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
-  public async insert(customType: object): Promise<Response> {
+  public async insert(slice: SliceModel): Promise<Response> {
 
-    return await this.http.post('https://customtypes.prismic.io/slices/insert', customType);
+    return await this.http.post('https://slices.prismic.io/slices/insert', slice);
   }
 
-  public async update(customType: object): Promise<Response> {
+  public async update(slice: SliceModel): Promise<Response> {
 
-    return await this.http.post('https://customtypes.prismic.io/slices/update', customType);
+    return await this.http.post('https://customtypes.prismic.io/slices/update', slice);
   }
 }
 
