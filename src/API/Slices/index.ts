@@ -1,36 +1,64 @@
 import { Response } from "node-fetch";
+import { SliceModel } from "../../Models/SliceModel";
 import HttpFetch from "../../utils/interface";
+import { slices as sliceRoute} from '../../utils/routes';
+import ApiInterface from "../api-interface";
 
-
-class Slices {
+class Slices implements ApiInterface {
   private repository: string;
   private http: HttpFetch;
 
   constructor(repository: string, http: HttpFetch) {
-    this.repository = repository
+    this.repository = repository;
     this.http = http.withHeaders({
       'repository': this.repository,
     });
   }
 
-  public async getOne(slice: string): Promise<Response> {
+  public async getOne(slice: string): Promise<SliceModel> {
+    try {
 
-    return await this.http.get(`https://customtypes.prismic.io/slices/${slice}`);
+      const response = await (await this.http.get(sliceRoute.show(slice)));
+
+      if (response.status === 403) {
+        let json = await response.json()
+
+        let message = json?.message as string
+
+        throw message.search('not a valid key=value pair (missing equal-sign) in Authorization header:')
+          ? new Error('Incorrect Url or Token issue')
+          : new Error('Unauthorized');
+      }
+
+      const sliceModel: SliceModel = await response.json();
+
+      return sliceModel;
+    } catch (error) {
+      throw new Error(`[ERROR] Unable to fetch the slice: ${slice}`)
+    }
   }
 
-  public async getAll(): Promise<Response> {
+  public async getAll(): Promise<SliceModel[]> {
+    try {
 
-    return await this.http.get('https://customtypes.prismic.io/slices');
+      const response = await this.http.get(sliceRoute.index);
+
+      const slices: SliceModel[] = await response.json();
+
+      return slices;
+    } catch (error) {
+      throw new Error(error)
+    }
   }
 
-  public async insert(customType: object): Promise<Response> {
+  public async insert(slice: SliceModel): Promise<Response> {
 
-    return await this.http.post('https://customtypes.prismic.io/slices/insert', customType);
+    return await this.http.post(sliceRoute.insert, slice);
   }
 
-  public async update(customType: object): Promise<Response> {
+  public async update(slice: SliceModel): Promise<Response> {
 
-    return await this.http.post('https://customtypes.prismic.io/slices/update', customType);
+    return await this.http.post(sliceRoute.update, slice);
   }
 }
 
