@@ -1,6 +1,6 @@
 {
   "name": "@reecem/custom-type-api",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0-alpha.3",
   "description": "API interface for the Prismic.io Custom Type API (beta)",
   "type": "module",
   "source": "src/index.ts",
@@ -20,12 +20,15 @@
     "api",
     "slicemachine"
   ],
-  "author": "ReeceM",
+  "author": "@ReeceM",
   "license": "ISC",
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
     "microbundle": "^0.13.3",
     "typescript": "^4.2.4"
+  },
+  "engines": {
+    "node": ">=12.0"
   },
   "dependencies": {
     "node-fetch": "^2.6.1"
