@@ -12,6 +12,15 @@ The readme is a WIP and the code could probably have some error handling added.
 
 ## Usage
 
+you can install the package using:
+
+> **Note**
+> you can use yarn, npm, pnpm or the github package registry.
+
+```bash
+npm i -D @reecem/custom-type-api
+```
+
 Below is an example of how to use this to interact with the API for the custom types, it gets a type and writes the result to ta json file.
 
 ### If using commonJS:
